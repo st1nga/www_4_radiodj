@@ -271,7 +271,7 @@ function sub_topics()
   <body>
     <div id="header" class="fixed">
     <div id="logo">
-      <img src="images/logo.png" style="float:left; margin-left: -3px; margin-top: -3px;"/>
+      <img src="/images/logo.png" style="float:left; margin-left: -3px; margin-top: -3px;"/>
 
 
 <h1>RADIODJ - History</h1>			</div>
