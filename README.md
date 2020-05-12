@@ -1,6 +1,8 @@
 # www_4_radiodj
-web stuff for RadioDJ
+web stuff for RadioDJ.
+
 None of this checks for sql injection or anything else.
+
 We run behind a firewall and these programs are not exposed to the world.
 Presenters can alter stuff via other methods to security was not high on the list and might never be, but if someone wants to add it in or I get time I may start to add stuff.
 I do have rudimentry secutrity like only accessing the sql table that a function needs and it it only needs read then that's all it gets.
