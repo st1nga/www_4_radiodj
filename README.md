@@ -19,3 +19,6 @@ Can also be used in studio of course.
 Shows what has been played, can also then click to get further details
 ## www_4_rdj.conf
 Variuos config details, probably shou,ld more in here
+
+## songs.php
+Shows data about songs and also update some fields, should expand it really.
