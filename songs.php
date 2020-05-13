@@ -124,8 +124,6 @@ Just display what we have already, no action to be taken
 		}
 	</script>
 
-<?php include("/coastfm/phplib/inc_now_playing_mq.html"); ?>
-
 <link href="/style.css" rel="stylesheet" type="text/css" />
 
 </head>
