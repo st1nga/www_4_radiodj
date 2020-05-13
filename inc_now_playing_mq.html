@@ -1,0 +1,67 @@
+<script type = "text/javascript">
+
+function create_UUID()
+{
+    var dt = new Date().getTime();
+    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = (dt + Math.random()*16)%16 | 0;
+        dt = Math.floor(dt/16);
+        return (c=='x' ? r :(r&0x3|0x8)).toString(16);
+    });
+console.log("UUID = " + uuid);
+    return uuid;
+}
+
+function onConnectionLost()
+{
+        document.getElementById("status").innerHTML = "Connection Lost";
+        var d = new Date();
+        document.getElementById("last_update").innerHTML = "Last update:" + d.toLocaleString()
+        connected_flag=0;
+        setTimeout(MQTTconnect, reconnectTimeout);
+}
+
+function onFailure(message)
+{
+        console.log("Connection Failed- Retrying");
+        setTimeout(MQTTconnect, reconnectTimeout);
+}
+
+function onConnected(recon,url)
+{
+        console.log(" in onConnected " +reconn);
+}
+
+function onConnect() {
+// Once a connection has been made, make a subscription and send a message.
+        console.log("Connected to '" + host + "' on port '" + port + "'");
+        document.getElementById("status").innerHTML = "";
+        connected_flag=1;
+        sub_topics()
+}
+
+function MQTTconnect()
+{
+        console.log('connecting');
+        mqtt = new Paho.MQTT.Client(host,port,"np_web_" + create_UUID());
+        var options = {
+                timeout: 3,
+                cleanSession: true,
+                onSuccess: onConnect,
+                onFailure: onFailure,
+        };
+
+        options.userName = username;
+        options.password = passwd;
+
+        mqtt.onConnectionLost = onConnectionLost;
+        mqtt.onMessageArrived = onMessageArrived;
+        mqtt.onConnected = onConnected;
+
+        mqtt.connect(options);
+
+console.log("Exiting MQTTconnect");
+        return false;
+}
+
+</script>
