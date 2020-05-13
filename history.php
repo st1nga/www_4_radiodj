@@ -152,8 +152,6 @@ $submit_button = '<td width="50%" align="right"><input type="hidden" name="ACTIO
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <link rel="shortcut icon" href="/coastfm.ico" />
   <script type="text/javascript" src="/ads/include/jquery.js"></script>
-  <script type = "text/javascript" src = "/js/progressbar.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.js" type="text/javascript"></script>
 
   <script type="text/javascript">
 		function swapVisibility(id) {
@@ -161,109 +159,6 @@ $submit_button = '<td width="50%" align="right"><input type="hidden" name="ACTIO
 		}
   </script>
 
-<?php include("/coastfm/phplib/inc_now_playing_mq.html"); ?>
-
-<script type = "text/javascript">
-
-function onConnectionLost()
-{
-  document.getElementById("status").innerHTML = "Connection Lost";
-  var d = new Date();
-  document.getElementById("last_update").innerHTML = "Last update:" + d.toLocaleString()
-  connected_flag=0;
-  setTimeout(MQTTconnect, reconnectTimeout);
-}
-
-function onFailure(message)
-{
-  console.log("Connection Failed- Retrying");
-  setTimeout(MQTTconnect, reconnectTimeout);
-}
-
-function onMessageArrived(r_message)
-{
-  console.log("In onMessageArrived. topic = " + r_message.destinationName);
-  var d = new Date();
-  document.getElementById("last_update").innerHTML = "Last update:" + d.toLocaleString()
-
-  if (r_message.destinationName == 'pi/now_short')
-  {
-    data = r_message.payloadString;
-    data_split = data.split(/:/);
-    document.getElementById("now_short").innerHTML = data_split[2];
-    var start_time = Math.round(Number(data_split[0]));
-    const now = new Date();
-    var now_time = Math.round(now.getTime() / 1000);
-
-    var into_track_ms = ((now_time - start_time) * 1000);
-    duration_ms = data_split[1] * 1000;
-    duration_ms = duration_ms - into_track_ms;
-
-    if (duration_ms > 0)
-    {
-      var bar = new ProgressBar.Line(now_short,
-      {
-        strokeWidth: 1,
-        duration: duration_ms,
-        color: '#000000',
-        trailColor: '#89abf5',
-        trailWidth: 0.2,
-        svgStyle: {width: '100%', height: '100%'},
-        from: {color: '#00f93c'},
-        to: {color: '#f90000'},
-        step: (state, bar) =>
-        {
-          bar.path.setAttribute('stroke', state.color);
-        }
-      });
-      bar.animate(1.0);
-    }
-  } else if (r_message.destinationName == 'pi/ta_flag')
-  {
-    document.getElementById("ta_flag").innerHTML = "TA Flag: " + r_message.payloadString;
-  } else if (r_message.destinationName == 'pi/active_studio')
-  {
-
-    document.getElementById("active_studio").innerHTML = "Active Studio: " + r_message.payloadString;
-  } else if (r_message.destinationName == 'pi/ta_flag')
-  {
-    document.getElementById("ta_flag").innerHTML = "TA Flag: " + r_message.payloadString;
-  } else
-  {
-    console.log("topic = " + r_message.destinationName + " " + d.toLocaleString());
-    document.getElementById("status").innerHTML = "Unknown " + r_message.destinationName + " message type recieved";
-  }
-}
-
-function sub_topics()
-{
-  var soptions={qos:1,};
-  mqtt.subscribe("pi/ta_flag",soptions);
-  mqtt.subscribe("pi/active_studio",soptions);
-  mqtt.subscribe("pi/now_short",soptions);
-  return false;
-}
-
-//+
-//When we first run this webpage call the mosquitto connection
-//-
-<?php
-  echo "  const username = '" . $config['mqtt']['username'] . "';\n";
-  echo "  const host = '" . $config['mqtt']['host'] . "';\n";
-  echo "  const port = " . $config['mqtt']['port'] . ";\n";
-  echo "  const passwd = '" . $config['mqtt']['passwd'] . "';\n";
-?>
-
-  var connected_flag=0;
-  var mqtt;
-  var reconnectTimeout = 2000;
-  var row=0;
-  var out_msg="";
-  var mcount=0;
-
-  window.onload = MQTTconnect();
-
-</script>
 
   <link href="/style.css" rel="stylesheet" type="text/css" />
   <link href="/css/style_now.css" rel="stylesheet" type="text/css" />
@@ -281,8 +176,6 @@ function sub_topics()
 <ul>
 <?php echo APP_MENU ?>
 </div>
-
-<?php include "/coastfm/phplib/inc_pi_box.html"?>
 
 <div class="bigbox fixed">
 <div id="main_inner" class="fixed">
